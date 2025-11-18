@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MD - Podcast
+{% endblock %}
+
+{% block body %}
+	<div class="podcast-page">
+		<header class="podcast-header">
+			<h1 class="podcast-page-title">Podcast</h1>
+			<p class="podcast-subtitle">Découvrez nos derniers épisodes</p>
+		</header>
+
+		<div class="podcast-grid">
+			{% for episode in episodes %}
+				<div class="podcast-episode">
+					<iframe data-testid="embed-iframe" style="border-radius:12px" src="{{ episode.embedUrl }}" width="100%" height="200" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+				</div>
+			{% else %}
+				<p class="no-episodes">Aucun épisode disponible pour le moment.</p>
+			{% endfor %}
+		</div>
+
+		{% if episodes.haveToPaginate %}
+			<div class="podcast-pagination">
+				{% if episodes.hasPreviousPage %}
+					<a href="{{ path('app_podcast', {page: episodes.previousPage}) }}" class="pagination-link">
+						← Précédent
+					</a>
+				{% endif %}
+
+				<div class="pagination-info">
+					Page
+					{{ episodes.currentPage }}
+					sur
+					{{ episodes.nbPages }}
+				</div>
+
+				{% if episodes.hasNextPage %}
+					<a href="{{ path('app_podcast', {page: episodes.nextPage}) }}" class="pagination-link">
+						Suivant →
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

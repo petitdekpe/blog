@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MD - Articles
+{% endblock %}
+
+{% block body %}
+	<div class="articles-page">
+		<header class="articles-header">
+			<h1 class="articles-page-title">Tous les articles</h1>
+		</header>
+
+		<div class="filters-section">
+			<form method="get" action="{{ path('app_articles') }}" class="filters-form">
+				<div class="filters-group">
+					<div class="filter-item">
+						<label for="category" class="filter-label">Catégorie</label>
+						<select name="category" id="category" class="filter-select">
+							<option value="">Toutes les catégories</option>
+							{% for category in categories %}
+								<option value="{{ category.slug }}" {% if selectedCategory == category.slug %} selected {% endif %}>
+									{{ category.name }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="filter-item">
+						<label for="year" class="filter-label">Année</label>
+						<select name="year" id="year" class="filter-select">
+							<option value="">Toutes les années</option>
+							{% for year in years %}
+								<option value="{{ year }}" {% if selectedYear == year %} selected {% endif %}>
+									{{ year }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="filter-item">
+						<label for="month" class="filter-label">Mois</label>
+						<select name="month" id="month" class="filter-select" {% if not selectedYear %} disabled {% endif %}>
+							<option value="">Tous les mois</option>
+							<option value="1" {% if selectedMonth == '1' %} selected {% endif %}>Janvier</option>
+							<option value="2" {% if selectedMonth == '2' %} selected {% endif %}>Février</option>
+							<option value="3" {% if selectedMonth == '3' %} selected {% endif %}>Mars</option>
+							<option value="4" {% if selectedMonth == '4' %} selected {% endif %}>Avril</option>
+							<option value="5" {% if selectedMonth == '5' %} selected {% endif %}>Mai</option>
+							<option value="6" {% if selectedMonth == '6' %} selected {% endif %}>Juin</option>
+							<option value="7" {% if selectedMonth == '7' %} selected {% endif %}>Juillet</option>
+							<option value="8" {% if selectedMonth == '8' %} selected {% endif %}>Août</option>
+							<option value="9" {% if selectedMonth == '9' %} selected {% endif %}>Septembre</option>
+							<option value="10" {% if selectedMonth == '10' %} selected {% endif %}>Octobre</option>
+							<option value="11" {% if selectedMonth == '11' %} selected {% endif %}>Novembre</option>
+							<option value="12" {% if selectedMonth == '12' %} selected {% endif %}>Décembre</option>
+						</select>
+					</div>
+
+					<div class="filter-item filter-actions">
+						<button type="submit" class="btn-filter">Filtrer</button>
+						<a href="{{ path('app_articles') }}" class="btn-reset">Réinitialiser</a>
+					</div>
+				</div>
+			</form>
+
+			<div class="articles-count">
+				{{ articles|length }}
+				article(s) trouvé(s)
+			</div>
+		</div>
+
+		<section class="articles-section">
+			<div class="articles-grid">
+				{% for article in articles %}
+					<article class="article-card">
+						<a href="{{ path('app_article', {slug: article.slug}) }}" class="article-link">
+							{% if article.image %}
+								<div class="article-image">
+									<img src="{{ asset('uploads/images/' ~ article.image) }}" alt="{{ article.title }}">
+									{% if article.tag %}
+										<span class="article-badge">{{ article.tag }}</span>
+									{% endif %}
+								</div>
+							{% endif %}
+							<div class="article-content">
+								<div class="article-meta">
+									{% for category in article.categories %}
+										<span class="article-category">{{ category.name }}</span>
+									{% endfor %}
+									<span class="article-date">{{ article.createdAt|date('d/m/Y') }}</span>
+								</div>
+								<h3 class="article-title">{{ article.title }}</h3>
+								{% if article.excerpt %}
+									<p class="article-excerpt">{{ article.excerpt }}</p>
+								{% endif %}
+							</div>
+						</a>
+					</article>
+				{% else %}
+					<p class="no-articles">Aucun article ne correspond à vos critères de recherche.</p>
+				{% endfor %}
+			</div>
+		</section>
+	</div>
+
+	<script>
+		// Activer/désactiver le select de mois selon l'année
+document.getElementById('year').addEventListener('change', function () {
+const monthSelect = document.getElementById('month');
+if (this.value) {
+monthSelect.disabled = false;
+} else {
+monthSelect.disabled = true;
+monthSelect.value = '';
+}
+});
+	</script>
+{% endblock %}

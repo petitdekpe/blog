@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ article.title }}
+	- MD
+{% endblock %}
+
+{% block body %}
+	<div class="article-page">
+		<article class="article-detail">
+			<header class="article-header">
+				<div class="article-meta">
+					{% for category in article.categories %}
+						<span class="tag">{{ category.name }}</span>
+					{% endfor %}
+					{% if article.tag %}
+						<span class="tag tag-highlight">{{ article.tag }}</span>
+					{% endif %}
+				</div>
+				<h1 class="article-title-main">{{ article.title }}</h1>
+				{% if article.image %}
+					<div class="article-image-main">
+						<img src="{{ asset('uploads/images/' ~ article.image) }}" alt="{{ article.title }}">
+					</div>
+				{% endif %}
+			</header>
+
+			<div class="article-body">
+				{{ article.content|raw }}
+			</div>
+
+			<footer class="article-footer">
+				{% if article.author %}
+				<div class="article-author">
+					<div class="author-info">
+						{% if article.author.twitterProfileImage %}
+						<img src="{{ article.author.twitterProfileImage }}" alt="{{ article.author }}" class="author-avatar">
+						{% endif %}
+						<div class="author-details">
+							<div class="author-name">{{ article.author.firstName }} {{ article.author.lastName }}</div>
+							{% if article.author.twitterHandle %}
+							<a href="https://twitter.com/{{ article.author.twitterHandle|replace({'@': ''}) }}" target="_blank" class="author-twitter">{{ article.author.twitterHandle }}</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				<time datetime="{{ article.createdAt|date('Y-m-d') }}" class="article-date">
+					Publié le
+					{{ article.createdAt|date('d/m/Y à H:i') }}
+				</time>
+			</footer>
+		</article>
+	</div>
+{% endblock %}

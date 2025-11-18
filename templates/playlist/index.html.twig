@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Playlists - Brut.{% endblock %}
+
+{% block body %}
+<div class="playlist-page">
+    <header class="playlist-header">
+        <h1 class="playlist-page-title">Playlists</h1>
+    </header>
+
+    {% if playlists %}
+    <div class="playlists-grid">
+        {% for playlist in playlists %}
+        <div class="playlist-item">
+            <iframe
+                data-testid="embed-iframe"
+                style="border-radius:12px"
+                src="{{ playlist.embedUrl }}"
+                width="100%"
+                height="352"
+                frameBorder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy">
+            </iframe>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-playlists">Aucune playlist disponible pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
