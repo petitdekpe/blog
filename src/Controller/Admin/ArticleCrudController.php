@@ -13,12 +13,33 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ArticleCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Article::class;
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if ($entityInstance instanceof Article && is_string($entityInstance->getTags())) {
+            $tagsString = $entityInstance->getTags();
+            $tagsArray = array_map('trim', explode(',', $tagsString));
+            $entityInstance->setTags(array_filter($tagsArray));
+        }
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if ($entityInstance instanceof Article && is_string($entityInstance->getTags())) {
+            $tagsString = $entityInstance->getTags();
+            $tagsArray = array_map('trim', explode(',', $tagsString));
+            $entityInstance->setTags(array_filter($tagsArray));
+        }
+        parent::updateEntity($entityManager, $entityInstance);
     }
 
     public function configureFields(string $pageName): iterable
@@ -38,7 +59,11 @@ class ArticleCrudController extends AbstractCrudController
                     return implode(', ', $names);
                 }),
             AssociationField::new('author', 'Auteur'),
-            TextField::new('tag', 'Tag')->setHelp('Ex: Article, À la une'),
+            TextareaField::new('tags', 'Tags')
+                ->setHelp('Entrez les tags séparés par des virgules (Ex: Article, À la une, Sport)')
+                ->formatValue(function ($value) {
+                    return is_array($value) ? implode(', ', $value) : '';
+                }),
             TextareaField::new('excerpt', 'Extrait')->hideOnIndex(),
             TextEditorField::new('content', 'Contenu')->hideOnIndex(),
             ImageField::new('image', 'Image')

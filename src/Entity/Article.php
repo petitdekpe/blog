@@ -48,8 +48,8 @@ class Article
     #[ORM\JoinTable(name: 'article_category')]
     private Collection $categories;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $tag = null;
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tags = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -189,14 +189,14 @@ class Article
         return $this;
     }
 
-    public function getTag(): ?string
+    public function getTags(): ?array
     {
-        return $this->tag;
+        return $this->tags;
     }
 
-    public function setTag(?string $tag): static
+    public function setTags(?array $tags): static
     {
-        $this->tag = $tag;
+        $this->tags = $tags;
         return $this;
     }
 

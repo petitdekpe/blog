@@ -21,6 +21,9 @@
 		{% endblock %}
 	</head>
 	<body>
+		<nav class="mobile-navbar">
+			<a href="{{ path('app_home') }}" class="mobile-logo">Brut.</a>
+		</nav>
 		<div class="app-container">
 			{% include 'partials/_sidebar.html.twig' %}
 			<main class="main-content"> {% block body %}{% endblock %}
