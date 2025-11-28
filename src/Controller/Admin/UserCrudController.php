@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -42,10 +43,13 @@ class UserCrudController extends AbstractCrudController
             TextField::new('firstName', 'Prénom'),
             TextField::new('lastName', 'Nom'),
             TelephoneField::new('phone', 'Téléphone'),
+            ImageField::new('profileImage', 'Photo de profil')
+                ->setBasePath('uploads/profiles')
+                ->setUploadDir('public/uploads/profiles')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setHelp('Upload de la photo de profil'),
             TextField::new('twitterHandle', 'Twitter/X Handle')
                 ->setHelp('Ex: @username'),
-            TextField::new('twitterProfileImage', 'URL Photo Twitter/X')
-                ->setHelp('URL de la photo de profil Twitter/X'),
             ArrayField::new('roles', 'Rôles'),
             TextField::new('password', 'Mot de passe')
                 ->setFormType(PasswordType::class)

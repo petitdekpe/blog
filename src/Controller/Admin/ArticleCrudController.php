@@ -45,8 +45,8 @@ class ArticleCrudController extends AbstractCrudController
                 ->setBasePath('uploads/images')
                 ->setUploadDir('public/uploads/images')
                 ->setUploadedFileNamePattern('[randomhash].[extension]'),
-            BooleanField::new('isFeatured', 'À la une'),
-            BooleanField::new('isPublished', 'Publié'),
+            BooleanField::new('featured', 'À la une'),
+            BooleanField::new('published', 'Publié'),
             DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
             DateTimeField::new('updatedAt', 'Modifié le')->hideOnForm(),
         ];
