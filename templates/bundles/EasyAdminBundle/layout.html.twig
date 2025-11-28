@@ -1,0 +1,13 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block importmap %}
+    {# Remplacer importmap par des CDN #}
+    <script type="importmap">
+    {
+        "imports": {
+            "@hotwired/stimulus": "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/dist/stimulus.min.js",
+            "@hotwired/turbo": "https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.3.0/dist/turbo.es2017-esm.min.js"
+        }
+    }
+    </script>
+{% endblock %}
